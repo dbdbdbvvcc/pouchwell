@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>파우치웰 | 가벼운 선택, 깊은 가치</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+        :root {
+            --primary-green: #5F7161;
+            --earth-beige: #D6CDB7;
+            --pure-white: #F5F5F5;
+            --warm-terracotta: #C37B5C;
+            --dark-text: #2D2D2D;
+            --light-text: #6B6B6B;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--pure-white);
+            color: var(--dark-text);
+            line-height: 1.6;
+        }
+
+        .english {
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(180deg, #F5F5F5 0%, #E8E4DD 100%);
+            position: relative;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background-color: var(--primary-green);
+            color: white;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            border-radius: 30px;
+            margin-bottom: 30px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--primary-green);
+        }
+
+        .hero .tagline {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: var(--light-text);
+            font-weight: 400;
+            font-style: italic;
+            margin-bottom: 40px;
+        }
+
+        .hero-description {
+            max-width: 600px;
+            font-size: 1.1rem;
+            color: var(--light-text);
+            margin-bottom: 50px;
+            line-height: 1.8;
+        }
+
+        .weight-highlight {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+
+        .weight-number {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 5rem;
+            font-weight: 600;
+            color: var(--primary-green);
+            line-height: 1;
+        }
+
+        .weight-unit {
+            font-size: 1.2rem;
+            color: var(--light-text);
+            text-align: left;
+        }
+
+        .weight-unit span {
+            display: block;
+            font-size: 0.9rem;
+        }
+
+        /* Values Section */
+        .values {
+            padding: 100px 20px;
+            background-color: white;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--dark-text);
+            margin-bottom: 10px;
+        }
+
+        .section-title p {
+            color: var(--light-text);
+            font-size: 1rem;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .value-card {
+            padding: 40px 30px;
+            background: var(--pure-white);
+            border-radius: 16px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .value-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .value-icon {
+            width: 60px;
+            height: 60px;
+            background-color: var(--earth-beige);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 1.5rem;
+        }
+
+        .value-card h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--primary-green);
+        }
+
+        .value-card p {
+            font-size: 0.95rem;
+            color: var(--light-text);
+            line-height: 1.7;
+        }
+
+        /* Problem Section */
+        .problem {
+            padding: 100px 20px;
+            background: linear-gradient(135deg, var(--primary-green) 0%, #4A5A4C 100%);
+            color: white;
+        }
+
+        .problem .section-title h2 {
+            color: white;
+        }
+
+        .problem .section-title p {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .problem-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .problem-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 25px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .problem-x {
+            color: var(--warm-terracotta);
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .problem-item p {
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Solution Section */
+        .solution {
+            padding: 100px 20px;
+            background-color: white;
+        }
+
+        .solution-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .solution-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .solution-text h3 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--dark-text);
+        }
+
+        .solution-text p {
+            font-size: 1rem;
+            color: var(--light-text);
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+
+        .feature-list {
+            list-style: none;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--earth-beige);
+            font-size: 0.95rem;
+        }
+
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+
+        .check-icon {
+            color: var(--primary-green);
+            font-weight: bold;
+        }
+
+        .solution-visual {
+            background: var(--earth-beige);
+            border-radius: 20px;
+            padding: 60px;
+            text-align: center;
+        }
+
+        .solution-visual .product-placeholder {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            color: var(--primary-green);
+            font-style: italic;
+        }
+
+        /* CTA Section */
+        .cta {
+            padding: 120px 20px;
+            background: linear-gradient(180deg, var(--pure-white) 0%, var(--earth-beige) 100%);
+            text-align: center;
+        }
+
+        .cta h2 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--dark-text);
+        }
+
+        .cta .subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            color: var(--light-text);
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .cta p {
+            max-width: 500px;
+            margin: 0 auto 40px;
+            color: var(--light-text);
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        .benefit-badge {
+            display: inline-block;
+            padding: 10px 25px;
+            background: var(--warm-terracotta);
+            color: white;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 40px;
+        }
+
+        /* Form Styles */
+        .signup-form {
+            max-width: 450px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--dark-text);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px 18px;
+            border: 2px solid var(--earth-beige);
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: 'Pretendard', sans-serif;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-green);
+        }
+
+        .form-group input::placeholder {
+            color: #aaa;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-top: 2px;
+            accent-color: var(--primary-green);
+        }
+
+        .checkbox-group label {
+            font-size: 0.85rem;
+            color: var(--light-text);
+            line-height: 1.5;
+        }
+
+        .checkbox-group a {
+            color: var(--primary-green);
+            text-decoration: underline;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: var(--primary-green);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            font-family: 'Pretendard', sans-serif;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .submit-btn:hover {
+            background: #4A5A4C;
+            transform: translateY(-2px);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .form-note {
+            margin-top: 15px;
+            font-size: 0.8rem;
+            color: var(--light-text);
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px 20px;
+            background: var(--dark-text);
+            color: rgba(255,255,255,0.6);
+            text-align: center;
+        }
+
+        footer .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        footer p {
+            font-size: 0.85rem;
+            margin-bottom: 5px;
+        }
+
+        /* Success Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            padding: 50px 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 400px;
+            margin: 20px;
+        }
+
+        .modal-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--primary-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .modal h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--dark-text);
+        }
+
+        .modal p {
+            color: var(--light-text);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .modal-btn {
+            padding: 12px 30px;
+            background: var(--primary-green);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Pretendard', sans-serif;
+            cursor: pointer;
+        }
+
+        /* Scroll Animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <span class="hero-badge">사전접수 진행중</span>
+        <h1>파우치웰</h1>
+        <p class="tagline english">"가벼운 선택, 깊은 가치"</p>
+
+        <div class="weight-highlight">
+            <span class="weight-number english">250</span>
+            <span class="weight-unit">g<span>초경량 친환경 웰니스</span></span>
+        </div>
+
+        <p class="hero-description">
+            경추 건강, 지구 건강, 경제적 건강.<br>
+            세 가지 가치를 하나의 선택으로 실현하는<br>
+            친환경 2-in-1 노트북 스탠드 파우치
+        </p>
+    </section>
+
+    <!-- Values Section -->
+    <section class="values fade-in">
+        <div class="container">
+            <div class="section-title">
+                <h2>삼중 가치의 조화</h2>
+                <p>개인의 웰빙, 환경적 책임, 경제적 합리성을 하나로</p>
+            </div>
+
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-icon">🌿</div>
+                    <h3>Personal Wellness</h3>
+                    <p>250g 초경량 설계로 어디서든 올바른 자세를 유지하며, 매일 사용하는 노트북 환경에서 경추 건강을 지켜드립니다.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">🌍</div>
+                    <h3>Environmental Stewardship</h3>
+                    <p>재생 가능한 친환경 소재를 사용하여 지구에 대한 책임을 실천합니다. 당신의 선택이 환경을 보호합니다.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">✨</div>
+                    <h3>Accessible Value</h3>
+                    <p>프리미엄 품질을 합리적 가격으로 제공합니다. 웰니스와 지속가능성은 사치가 아닌 모두의 권리입니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section class="problem fade-in">
+        <div class="container">
+            <div class="section-title">
+                <h2>우리가 해결하는 문제</h2>
+                <p>더 이상 타협하지 마세요</p>
+            </div>
+
+            <div class="problem-list">
+                <div class="problem-item">
+                    <span class="problem-x">✕</span>
+                    <p><strong>무겁고 불편한 노트북 스탠드</strong> — 휴대가 어려워 결국 사용하지 않게 되는 건강 솔루션</p>
+                </div>
+                <div class="problem-item">
+                    <span class="problem-x">✕</span>
+                    <p><strong>플라스틱 기반의 저렴한 파우치</strong> — 환경에 대한 죄책감을 안고 사용하는 일상용품</p>
+                </div>
+                <div class="problem-item">
+                    <span class="problem-x">✕</span>
+                    <p><strong>고가의 친환경 제품</strong> — 가치는 인정하지만 접근하기 어려운 가격 장벽</p>
+                </div>
+                <div class="problem-item">
+                    <span class="problem-x">✕</span>
+                    <p><strong>증가하는 20대 경추 질환</strong> — 하루 4시간 이상 노트북 사용, 방치되는 목 건강</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution Section -->
+    <section class="solution fade-in">
+        <div class="container">
+            <div class="solution-content">
+                <div class="solution-text">
+                    <h3>파우치웰의 해답</h3>
+                    <p>
+                        친환경 소재로 정교하게 설계된 250g 초경량 2-in-1 솔루션.
+                        파우치와 노트북 스탠드를 하나로 통합하여, 공간과 자원의 효율을
+                        극대화했습니다.
+                    </p>
+
+                    <ul class="feature-list">
+                        <li><span class="check-icon">✓</span> 250g 초경량 — 언제 어디서나 휴대 가능</li>
+                        <li><span class="check-icon">✓</span> 친환경 재생 소재 — 지구를 생각하는 소재 선택</li>
+                        <li><span class="check-icon">✓</span> 2-in-1 통합 설계 — 파우치 + 스탠드 기능</li>
+                        <li><span class="check-icon">✓</span> 인체공학적 각도 — 경추 부담 최소화</li>
+                        <li><span class="check-icon">✓</span> 합리적 가격대 — 누구나 접근 가능한 웰니스</li>
+                    </ul>
+                </div>
+
+                <div class="solution-visual">
+                    <p class="product-placeholder">
+                        "타협 없는 완성도"<br><br>
+                        경량화 · 친환경성 · 기능성<br>
+                        모두를 만족하는 통합 솔루션
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta fade-in" id="signup">
+        <h2>사전접수 신청하기</h2>
+        <p class="subtitle english">Be the First to Experience</p>
+        <p>
+            파우치웰의 첫 번째 고객이 되어주세요.<br>
+            사전접수 고객에게는 특별한 혜택을 드립니다.
+        </p>
+
+        <span class="benefit-badge">사전접수 특별 할인 + 무료배송</span>
+
+        <form class="signup-form" id="preorderForm">
+            <div class="form-group">
+                <label for="name">이름</label>
+                <input type="text" id="name" name="name" placeholder="홍길동" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">이메일</label>
+                <input type="email" id="email" name="email" placeholder="example@email.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">연락처</label>
+                <input type="tel" id="phone" name="phone" placeholder="010-1234-5678" required>
+            </div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="privacy" required>
+                <label for="privacy">
+                    <a href="#" onclick="alert('개인정보 처리방침 내용이 표시됩니다.')">개인정보 처리방침</a>에 동의하며,
+                    파우치웰의 런칭 소식 및 프로모션 정보 수신에 동의합니다.
+                </label>
+            </div>
+
+            <button type="submit" class="submit-btn">사전접수 신청하기</button>
+
+            <p class="form-note">* 사전접수는 구매 의무가 없으며, 언제든 취소 가능합니다.</p>
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p class="logo english">Pouch Well</p>
+        <p>파우치웰 | 가벼운 선택, 깊은 가치</p>
+        <p>© 2024 PouchWell. All rights reserved.</p>
+    </footer>
+
+    <!-- Success Modal -->
+    <div class="modal-overlay" id="successModal">
+        <div class="modal">
+            <div class="modal-icon">✓</div>
+            <h3>사전접수가 완료되었습니다!</h3>
+            <p>
+                파우치웰의 첫 번째 고객이 되어주셔서 감사합니다.<br>
+                런칭 소식을 가장 먼저 전해드릴게요.
+            </p>
+            <button class="modal-btn" onclick="closeModal()">확인</button>
+        </div>
+    </div>
+
+    <script>
+        // Scroll Animation
+        const fadeElements = document.querySelectorAll('.fade-in');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        fadeElements.forEach(el => observer.observe(el));
+
+        // Form Submission
+        document.getElementById('preorderForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // 여기에 실제 폼 제출 로직 추가 (예: Google Sheets, 서버 API 등)
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value
+            };
+
+            console.log('사전접수 데이터:', formData);
+
+            // 성공 모달 표시
+            document.getElementById('successModal').classList.add('active');
+
+            // 폼 초기화
+            this.reset();
+        });
+
+        // Modal Close
+        function closeModal() {
+            document.getElementById('successModal').classList.remove('active');
+        }
+
+        // Close modal on overlay click
+        document.getElementById('successModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
