@@ -6,21 +6,34 @@
     <title>파우치웰 | 가벼운 선택, 깊은 가치</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- MediaPipe Pose Detection -->
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js" crossorigin="anonymous"></script>
     <style>
-        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
-
         :root {
-            --primary-green: #5F7161;
-            --earth-beige: #D6CDB7;
-            --pure-white: #F5F5F5;
-            --warm-terracotta: #C37B5C;
-            --dark-text: #2D2D2D;
-            --light-text: #6B6B6B;
+            --primary-blue: #0066FF;
+            --primary-dark: #0052CC;
+            --primary-light: #E6F0FF;
+            --accent-blue: #00D4FF;
+            --navy: #0A1628;
+            --navy-light: #1A2B4A;
+            --white: #FFFFFF;
+            --off-white: #F8FAFC;
+            --gray-50: #F1F5F9;
+            --gray-100: #E2E8F0;
+            --gray-200: #CBD5E1;
+            --gray-400: #94A3B8;
+            --gray-600: #475569;
+            --gray-800: #1E293B;
+            --gradient-primary: linear-gradient(135deg, #0066FF 0%, #00D4FF 100%);
+            --gradient-dark: linear-gradient(135deg, #0A1628 0%, #1A2B4A 100%);
+            --gradient-light: linear-gradient(180deg, #F8FAFC 0%, #E6F0FF 100%);
+            --shadow-sm: 0 2px 8px rgba(0, 102, 255, 0.08);
+            --shadow-md: 0 8px 30px rgba(0, 102, 255, 0.12);
+            --shadow-lg: 0 20px 60px rgba(0, 102, 255, 0.15);
+            --shadow-glow: 0 0 40px rgba(0, 212, 255, 0.3);
         }
 
         * {
@@ -29,238 +42,639 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: var(--pure-white);
-            color: var(--dark-text);
-            line-height: 1.6;
+            font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--white);
+            color: var(--gray-800);
+            line-height: 1.7;
+            overflow-x: hidden;
         }
 
         .english {
-            font-family: 'Cormorant Garamond', serif;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* Top Announcement Bar */
+        .announcement-bar {
+            background: var(--gradient-primary);
+            padding: 12px 20px;
+            text-align: center;
+            color: var(--white);
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .announcement-bar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            100% { left: 100%; }
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 20px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(20px);
+            padding: 15px 60px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .logo {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--navy);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: var(--primary-blue);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--gray-600);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-blue);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-blue);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            padding: 12px 28px;
+            background: var(--gradient-primary);
+            color: var(--white);
+            border: none;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
         }
 
         /* Hero Section */
         .hero {
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
-            text-align: center;
-            padding: 40px 20px;
-            background: linear-gradient(180deg, #F5F5F5 0%, #E8E4DD 100%);
+            padding: 140px 60px 100px;
+            background: var(--gradient-light);
             position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 80%;
+            height: 150%;
+            background: radial-gradient(ellipse, rgba(0, 212, 255, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 60%;
+            height: 100%;
+            background: radial-gradient(ellipse, rgba(0, 102, 255, 0.06) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
         }
 
         .hero-badge {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             padding: 8px 20px;
-            background-color: var(--primary-green);
-            color: white;
+            background: var(--white);
+            border: 1px solid var(--primary-light);
+            border-radius: 50px;
             font-size: 13px;
-            font-weight: 500;
-            letter-spacing: 1px;
-            border-radius: 30px;
-            margin-bottom: 30px;
+            font-weight: 600;
+            color: var(--primary-blue);
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .hero-badge::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--primary-blue);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
         }
 
         .hero h1 {
-            font-size: clamp(2.5rem, 6vw, 4rem);
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: var(--primary-green);
+            font-size: clamp(2.8rem, 5vw, 4.2rem);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 24px;
+            color: var(--navy);
         }
 
-        .hero .tagline {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(1.2rem, 3vw, 1.8rem);
-            color: var(--light-text);
-            font-weight: 400;
-            font-style: italic;
-            margin-bottom: 40px;
+        .hero h1 .highlight {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .hero-description {
-            max-width: 600px;
-            font-size: 1.1rem;
-            color: var(--light-text);
-            margin-bottom: 50px;
+            font-size: 1.15rem;
+            color: var(--gray-600);
+            margin-bottom: 40px;
             line-height: 1.8;
         }
 
-        .weight-highlight {
+        .hero-stats {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+            gap: 50px;
             margin-bottom: 40px;
         }
 
-        .weight-number {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 5rem;
-            font-weight: 600;
-            color: var(--primary-green);
-            line-height: 1;
-        }
-
-        .weight-unit {
-            font-size: 1.2rem;
-            color: var(--light-text);
+        .stat-item {
             text-align: left;
         }
 
-        .weight-unit span {
+        .stat-number {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+
+        .stat-number span {
+            font-size: 1.2rem;
+            color: var(--gray-400);
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--gray-600);
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+        }
+
+        .btn-primary {
+            padding: 18px 36px;
+            background: var(--gradient-primary);
+            color: var(--white);
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-primary svg {
+            transition: transform 0.3s ease;
+        }
+
+        .btn-primary:hover svg {
+            transform: translateX(5px);
+        }
+
+        .btn-secondary {
+            padding: 18px 36px;
+            background: var(--white);
+            color: var(--gray-800);
+            border: 2px solid var(--gray-200);
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary-blue);
+            color: var(--primary-blue);
+        }
+
+        .hero-visual {
+            position: relative;
+        }
+
+        .hero-image-wrapper {
+            position: relative;
+            padding: 40px;
+        }
+
+        .hero-image-card {
+            background: var(--white);
+            border-radius: 32px;
+            padding: 60px;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-image-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: var(--gradient-primary);
+        }
+
+        .product-preview {
+            text-align: center;
+        }
+
+        .product-preview-icon {
+            font-size: 8rem;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 20px 40px rgba(0,102,255,0.2));
+        }
+
+        .product-preview h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 10px;
+        }
+
+        .product-preview p {
+            color: var(--gray-600);
+            font-size: 15px;
+        }
+
+        .floating-card {
+            position: absolute;
+            background: var(--white);
+            border-radius: 16px;
+            padding: 20px 24px;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-card.card-1 {
+            top: 20px;
+            right: -20px;
+            animation-delay: 0s;
+        }
+
+        .floating-card.card-2 {
+            bottom: 40px;
+            left: -30px;
+            animation-delay: 2s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .floating-card-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--primary-light);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .floating-card-text {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--navy);
+        }
+
+        .floating-card-text span {
             display: block;
-            font-size: 0.9rem;
+            font-weight: 400;
+            color: var(--gray-600);
+            font-size: 13px;
+        }
+
+        /* Section Common */
+        .section {
+            padding: 120px 60px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .section-tag {
+            display: inline-block;
+            padding: 8px 20px;
+            background: var(--primary-light);
+            color: var(--primary-blue);
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--gray-600);
+            max-width: 600px;
+            margin: 0 auto;
         }
 
         /* Values Section */
         .values {
-            padding: 100px 20px;
-            background-color: white;
-        }
-
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-
-        .section-title h2 {
-            font-size: 2rem;
-            font-weight: 600;
-            color: var(--dark-text);
-            margin-bottom: 10px;
-        }
-
-        .section-title p {
-            color: var(--light-text);
-            font-size: 1rem;
+            background: var(--white);
         }
 
         .values-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
         }
 
         .value-card {
-            padding: 40px 30px;
-            background: var(--pure-white);
-            border-radius: 16px;
+            padding: 50px 40px;
+            background: var(--off-white);
+            border-radius: 24px;
             text-align: center;
-            transition: transform 0.3s ease;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .value-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
         }
 
         .value-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+            background: var(--white);
+        }
+
+        .value-card:hover::before {
+            transform: scaleX(1);
         }
 
         .value-icon {
-            width: 60px;
-            height: 60px;
-            background-color: var(--earth-beige);
-            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            background: var(--gradient-primary);
+            border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 1.5rem;
+            margin: 0 auto 25px;
+            font-size: 2rem;
+            color: var(--white);
+            transition: transform 0.4s ease;
+        }
+
+        .value-card:hover .value-icon {
+            transform: scale(1.1) rotate(5deg);
         }
 
         .value-card h3 {
-            font-size: 1.2rem;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.3rem;
             font-weight: 600;
-            margin-bottom: 12px;
-            color: var(--primary-green);
+            margin-bottom: 15px;
+            color: var(--navy);
         }
 
         .value-card p {
-            font-size: 0.95rem;
-            color: var(--light-text);
+            font-size: 15px;
+            color: var(--gray-600);
             line-height: 1.7;
         }
 
         /* Problem Section */
         .problem {
-            padding: 100px 20px;
-            background: linear-gradient(135deg, var(--primary-green) 0%, #4A5A4C 100%);
-            color: white;
+            background: var(--gradient-dark);
+            position: relative;
+            overflow: hidden;
         }
 
-        .problem .section-title h2 {
-            color: white;
+        .problem::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            background: radial-gradient(ellipse at top right, rgba(0, 212, 255, 0.1) 0%, transparent 60%);
         }
 
-        .problem .section-title p {
-            color: rgba(255,255,255,0.7);
+        .problem .section-tag {
+            background: rgba(0, 212, 255, 0.2);
+            color: var(--accent-blue);
+        }
+
+        .problem .section-title {
+            color: var(--white);
+        }
+
+        .problem .section-subtitle {
+            color: var(--gray-400);
         }
 
         .problem-list {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            max-width: 700px;
-            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            position: relative;
+            z-index: 1;
         }
 
         .problem-item {
             display: flex;
             align-items: flex-start;
-            gap: 15px;
-            padding: 25px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 12px;
+            gap: 20px;
+            padding: 30px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
             backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
         }
 
-        .problem-x {
-            color: var(--warm-terracotta);
+        .problem-item:hover {
+            background: rgba(255,255,255,0.08);
+            transform: translateX(10px);
+        }
+
+        .problem-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 107, 107, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 1.5rem;
-            font-weight: bold;
+            flex-shrink: 0;
         }
 
-        .problem-item p {
-            font-size: 1rem;
+        .problem-text h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 8px;
+        }
+
+        .problem-text p {
+            font-size: 14px;
+            color: var(--gray-400);
             line-height: 1.6;
         }
 
         /* Solution Section */
         .solution {
-            padding: 100px 20px;
-            background-color: white;
+            background: var(--off-white);
         }
 
         .solution-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 60px;
+            gap: 80px;
             align-items: center;
         }
 
-        @media (max-width: 768px) {
-            .solution-content {
-                grid-template-columns: 1fr;
-            }
-        }
-
         .solution-text h3 {
-            font-size: 1.8rem;
-            font-weight: 600;
+            font-size: 2rem;
+            font-weight: 700;
             margin-bottom: 20px;
-            color: var(--dark-text);
+            color: var(--navy);
         }
 
-        .solution-text p {
-            font-size: 1rem;
-            color: var(--light-text);
-            margin-bottom: 30px;
+        .solution-text > p {
+            font-size: 1.05rem;
+            color: var(--gray-600);
+            margin-bottom: 40px;
             line-height: 1.8;
         }
 
@@ -271,10 +685,17 @@
         .feature-list li {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 12px 0;
-            border-bottom: 1px solid var(--earth-beige);
-            font-size: 0.95rem;
+            gap: 15px;
+            padding: 18px 0;
+            border-bottom: 1px solid var(--gray-100);
+            font-size: 16px;
+            color: var(--gray-800);
+            transition: all 0.3s ease;
+        }
+
+        .feature-list li:hover {
+            padding-left: 10px;
+            color: var(--primary-blue);
         }
 
         .feature-list li:last-child {
@@ -282,215 +703,88 @@
         }
 
         .check-icon {
-            color: var(--primary-green);
+            width: 28px;
+            height: 28px;
+            background: var(--gradient-primary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
             font-weight: bold;
+            font-size: 14px;
+            flex-shrink: 0;
         }
 
         .solution-visual {
-            background: var(--earth-beige);
-            border-radius: 20px;
+            background: var(--white);
+            border-radius: 32px;
             padding: 60px;
+            box-shadow: var(--shadow-md);
             text-align: center;
+            position: relative;
         }
 
-        .solution-visual .product-placeholder {
-            font-family: 'Cormorant Garamond', serif;
+        .solution-visual::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            width: 100px;
+            height: 100px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            opacity: 0.1;
+        }
+
+        .solution-visual .product-image {
+            font-size: 6rem;
+            margin-bottom: 30px;
+        }
+
+        .solution-visual h4 {
+            font-family: 'Outfit', sans-serif;
             font-size: 1.5rem;
-            color: var(--primary-green);
-            font-style: italic;
-        }
-
-        /* CTA Section */
-        .cta {
-            padding: 120px 20px;
-            background: linear-gradient(180deg, var(--pure-white) 0%, var(--earth-beige) 100%);
-            text-align: center;
-        }
-
-        .cta h2 {
-            font-size: 2.2rem;
             font-weight: 600;
+            color: var(--navy);
             margin-bottom: 15px;
-            color: var(--dark-text);
         }
 
-        .cta .subtitle {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.3rem;
-            color: var(--light-text);
-            font-style: italic;
-            margin-bottom: 20px;
-        }
-
-        .cta p {
-            max-width: 500px;
-            margin: 0 auto 40px;
-            color: var(--light-text);
-            font-size: 1rem;
+        .solution-visual p {
+            color: var(--gray-600);
+            font-size: 15px;
             line-height: 1.7;
-        }
-
-        .benefit-badge {
-            display: inline-block;
-            padding: 10px 25px;
-            background: var(--warm-terracotta);
-            color: white;
-            border-radius: 30px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            margin-bottom: 40px;
-        }
-
-        /* Form Styles */
-        .signup-form {
-            max-width: 450px;
-            margin: 0 auto;
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-            text-align: left;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--dark-text);
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 15px 18px;
-            border: 2px solid var(--earth-beige);
-            border-radius: 10px;
-            font-size: 1rem;
-            font-family: 'Pretendard', sans-serif;
-            transition: border-color 0.3s ease;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--primary-green);
-        }
-
-        .form-group input::placeholder {
-            color: #aaa;
-        }
-
-        .checkbox-group {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            margin-bottom: 25px;
-            text-align: left;
-        }
-
-        .checkbox-group input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            margin-top: 2px;
-            accent-color: var(--primary-green);
-        }
-
-        .checkbox-group label {
-            font-size: 0.85rem;
-            color: var(--light-text);
-            line-height: 1.5;
-        }
-
-        .checkbox-group a {
-            color: var(--primary-green);
-            text-decoration: underline;
-        }
-
-        .submit-btn {
-            width: 100%;
-            padding: 18px;
-            background: var(--primary-green);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            font-family: 'Pretendard', sans-serif;
-            cursor: pointer;
-            transition: background 0.3s ease, transform 0.2s ease;
-        }
-
-        .submit-btn:hover {
-            background: #4A5A4C;
-            transform: translateY(-2px);
-        }
-
-        .submit-btn:active {
-            transform: translateY(0);
-        }
-
-        .form-note {
-            margin-top: 15px;
-            font-size: 0.8rem;
-            color: var(--light-text);
-        }
-
-        /* Footer */
-        footer {
-            padding: 40px 20px;
-            background: var(--dark-text);
-            color: rgba(255,255,255,0.6);
-            text-align: center;
-        }
-
-        footer .logo {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.5rem;
-            color: white;
-            margin-bottom: 15px;
-        }
-
-        footer p {
-            font-size: 0.85rem;
-            margin-bottom: 5px;
         }
 
         /* Neck Check Section */
         .neck-check {
-            padding: 100px 20px;
-            background: linear-gradient(135deg, #F8F6F3 0%, #EDE9E3 100%);
+            background: var(--white);
+            position: relative;
         }
 
-        .neck-check-container {
-            max-width: 900px;
-            margin: 0 auto;
+        .neck-check::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--gradient-primary);
         }
 
         .camera-wrapper {
-            display: flex;
-            gap: 40px;
-            align-items: flex-start;
-            margin-top: 50px;
-        }
-
-        @media (max-width: 768px) {
-            .camera-wrapper {
-                flex-direction: column;
-                align-items: center;
-            }
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 50px;
+            align-items: start;
         }
 
         .camera-box {
             position: relative;
-            width: 480px;
-            max-width: 100%;
-            background: #000;
-            border-radius: 16px;
+            background: var(--navy);
+            border-radius: 24px;
             overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            box-shadow: var(--shadow-lg);
         }
 
         .camera-box video,
@@ -511,82 +805,99 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, var(--earth-beige) 0%, #C4B8A5 100%);
-            color: var(--dark-text);
+            background: var(--gradient-dark);
+            color: var(--white);
             text-align: center;
-            padding: 40px;
+            padding: 50px;
         }
 
         .camera-placeholder-icon {
-            font-size: 4rem;
-            margin-bottom: 20px;
+            width: 100px;
+            height: 100px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            margin-bottom: 25px;
+            border: 2px dashed rgba(255,255,255,0.3);
         }
 
         .camera-placeholder h4 {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             margin-bottom: 10px;
         }
 
         .camera-placeholder p {
-            font-size: 0.9rem;
-            color: var(--light-text);
+            font-size: 14px;
+            color: var(--gray-400);
+            margin-bottom: 30px;
         }
 
         .start-camera-btn {
-            margin-top: 20px;
-            padding: 15px 35px;
-            background: var(--primary-green);
-            color: white;
+            padding: 16px 40px;
+            background: var(--gradient-primary);
+            color: var(--white);
             border: none;
-            border-radius: 10px;
-            font-size: 1rem;
+            border-radius: 12px;
+            font-size: 16px;
             font-weight: 600;
-            font-family: 'Pretendard', sans-serif;
             cursor: pointer;
             transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .start-camera-btn:hover {
-            background: #4A5A4C;
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-glow);
         }
 
         .start-camera-btn:disabled {
-            background: #aaa;
+            background: var(--gray-400);
             cursor: not-allowed;
             transform: none;
+            box-shadow: none;
         }
 
         .status-panel {
-            flex: 1;
-            min-width: 280px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
         .status-card {
-            background: white;
-            border-radius: 16px;
-            padding: 30px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-            margin-bottom: 20px;
+            background: var(--off-white);
+            border-radius: 20px;
+            padding: 28px;
+            transition: all 0.3s ease;
+        }
+
+        .status-card:hover {
+            box-shadow: var(--shadow-sm);
         }
 
         .status-card h4 {
-            font-size: 1rem;
-            color: var(--light-text);
+            font-size: 13px;
+            color: var(--gray-600);
             margin-bottom: 15px;
-            font-weight: 500;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .posture-status {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 18px;
         }
 
         .status-indicator {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -595,151 +906,382 @@
         }
 
         .status-indicator.good {
-            background: #E8F5E9;
-            color: #4CAF50;
+            background: linear-gradient(135deg, #10B981 0%, #34D399 100%);
+            color: var(--white);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
         }
 
         .status-indicator.warning {
-            background: #FFF3E0;
-            color: #FF9800;
+            background: linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%);
+            color: var(--white);
+            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
         }
 
         .status-indicator.bad {
-            background: #FFEBEE;
-            color: #F44336;
+            background: linear-gradient(135deg, #EF4444 0%, #F87171 100%);
+            color: var(--white);
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
         }
 
         .status-indicator.inactive {
-            background: var(--earth-beige);
-            color: var(--light-text);
+            background: var(--gray-100);
+            color: var(--gray-400);
         }
 
         .status-text h3 {
-            font-size: 1.3rem;
-            font-weight: 600;
+            font-size: 1.2rem;
+            font-weight: 700;
             margin-bottom: 5px;
+            color: var(--navy);
         }
 
         .status-text p {
-            font-size: 0.9rem;
-            color: var(--light-text);
+            font-size: 14px;
+            color: var(--gray-600);
         }
 
         .angle-display {
             text-align: center;
-            padding: 20px;
+            padding: 15px;
         }
 
         .angle-value {
-            font-family: 'Cormorant Garamond', serif;
+            font-family: 'Outfit', sans-serif;
             font-size: 3.5rem;
-            font-weight: 600;
-            color: var(--primary-green);
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             line-height: 1;
         }
 
         .angle-label {
-            font-size: 0.9rem;
-            color: var(--light-text);
-            margin-top: 5px;
+            font-size: 13px;
+            color: var(--gray-600);
+            margin-top: 8px;
         }
 
         .tips-card {
-            background: var(--primary-green);
-            color: white;
-            border-radius: 16px;
-            padding: 25px;
+            background: var(--gradient-primary);
+            color: var(--white);
+            border-radius: 20px;
+            padding: 28px;
         }
 
         .tips-card h4 {
-            color: white;
-            margin-bottom: 15px;
-            font-size: 1rem;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 18px;
         }
 
         .tips-card ul {
             list-style: none;
-            font-size: 0.9rem;
+            font-size: 14px;
             line-height: 1.8;
         }
 
         .tips-card li {
             display: flex;
             align-items: flex-start;
-            gap: 10px;
-            margin-bottom: 8px;
+            gap: 12px;
+            margin-bottom: 12px;
+            opacity: 0.95;
         }
 
         .tips-card li::before {
-            content: "💡";
+            content: "✦";
             flex-shrink: 0;
+            opacity: 0.7;
         }
 
         .camera-controls {
             display: flex;
-            gap: 10px;
-            margin-top: 15px;
+            gap: 12px;
+            margin-top: 20px;
             justify-content: center;
         }
 
         .camera-controls button {
-            padding: 10px 20px;
+            padding: 14px 28px;
             border: none;
-            border-radius: 8px;
-            font-family: 'Pretendard', sans-serif;
-            font-size: 0.9rem;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .stop-btn {
-            background: #F44336;
-            color: white;
+            background: #FEE2E2;
+            color: #DC2626;
         }
 
         .stop-btn:hover {
-            background: #D32F2F;
+            background: #FECACA;
+        }
+
+        .pip-btn {
+            background: var(--primary-light);
+            color: var(--primary-blue);
+        }
+
+        .pip-btn:hover {
+            background: var(--primary-blue);
+            color: var(--white);
         }
 
         /* Fixed Status Popup */
         .fixed-status-popup {
             position: fixed;
-            top: 20px;
-            left: 20px;
-            padding: 15px 25px;
-            border-radius: 12px;
-            color: white;
-            font-size: 1.1rem;
+            top: 100px;
+            left: 24px;
+            padding: 16px 24px;
+            border-radius: 16px;
+            color: var(--white);
+            font-size: 14px;
             font-weight: 600;
             z-index: 9999;
             display: none;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            box-shadow: var(--shadow-lg);
             transition: all 0.3s ease;
-            min-width: 120px;
+            min-width: 140px;
             text-align: center;
+            backdrop-filter: blur(10px);
         }
 
         .fixed-status-popup.active {
             display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
         .fixed-status-popup.good {
-            background: #4CAF50;
+            background: linear-gradient(135deg, #10B981 0%, #34D399 100%);
         }
 
         .fixed-status-popup.bad {
-            background: #F44336;
+            background: linear-gradient(135deg, #EF4444 0%, #F87171 100%);
         }
 
         .fixed-status-popup .status-label {
-            font-size: 0.8rem;
+            font-size: 11px;
             opacity: 0.9;
-            margin-bottom: 3px;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .fixed-status-popup .status-value {
             font-size: 1.3rem;
             font-weight: 700;
+        }
+
+        /* CTA Section */
+        .cta {
+            background: var(--gradient-light);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -20%;
+            width: 60%;
+            height: 150%;
+            background: radial-gradient(ellipse, rgba(0, 102, 255, 0.05) 0%, transparent 70%);
+        }
+
+        .cta-content {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta h2 {
+            font-size: clamp(2rem, 4vw, 2.5rem);
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 15px;
+        }
+
+        .cta .subtitle {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.2rem;
+            color: var(--primary-blue);
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        .cta > p {
+            max-width: 500px;
+            margin: 0 auto 30px;
+            color: var(--gray-600);
+            font-size: 16px;
+        }
+
+        .benefit-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 28px;
+            background: var(--gradient-primary);
+            color: var(--white);
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 50px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .benefit-badge svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Form Styles */
+        .signup-form {
+            max-width: 480px;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 50px;
+            border-radius: 28px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid var(--gray-100);
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: var(--off-white);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            background: var(--white);
+            box-shadow: 0 0 0 4px var(--primary-light);
+        }
+
+        .form-group input::placeholder {
+            color: var(--gray-400);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-top: 2px;
+            accent-color: var(--primary-blue);
+            cursor: pointer;
+        }
+
+        .checkbox-group label {
+            font-size: 14px;
+            color: var(--gray-600);
+            line-height: 1.6;
+        }
+
+        .checkbox-group a {
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .checkbox-group a:hover {
+            text-decoration: underline;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: var(--gradient-primary);
+            color: var(--white);
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .form-note {
+            margin-top: 20px;
+            font-size: 13px;
+            color: var(--gray-400);
+            text-align: center;
+        }
+
+        /* Footer */
+        footer {
+            padding: 60px 60px 40px;
+            background: var(--navy);
+            color: var(--white);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-logo {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .footer-logo span {
+            color: var(--accent-blue);
+        }
+
+        .footer-text {
+            text-align: right;
+        }
+
+        .footer-text p {
+            font-size: 14px;
+            color: var(--gray-400);
+            margin-bottom: 5px;
         }
 
         /* Success Modal */
@@ -750,10 +1292,11 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(10, 22, 40, 0.8);
+            backdrop-filter: blur(10px);
             justify-content: center;
             align-items: center;
-            z-index: 1000;
+            z-index: 10000;
         }
 
         .modal-overlay.active {
@@ -761,61 +1304,155 @@
         }
 
         .modal {
-            background: white;
-            padding: 50px 40px;
-            border-radius: 20px;
+            background: var(--white);
+            padding: 60px 50px;
+            border-radius: 28px;
             text-align: center;
-            max-width: 400px;
+            max-width: 420px;
             margin: 20px;
+            animation: modalIn 0.3s ease;
+        }
+
+        @keyframes modalIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
 
         .modal-icon {
-            width: 70px;
-            height: 70px;
-            background: var(--primary-green);
+            width: 80px;
+            height: 80px;
+            background: var(--gradient-primary);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 25px;
-            font-size: 2rem;
-            color: white;
+            margin: 0 auto 30px;
+            font-size: 2.5rem;
+            color: var(--white);
         }
 
         .modal h3 {
             font-size: 1.5rem;
             margin-bottom: 15px;
-            color: var(--dark-text);
+            color: var(--navy);
         }
 
         .modal p {
-            color: var(--light-text);
-            font-size: 0.95rem;
-            line-height: 1.6;
-            margin-bottom: 25px;
+            color: var(--gray-600);
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 30px;
         }
 
         .modal-btn {
-            padding: 12px 30px;
-            background: var(--primary-green);
-            color: white;
+            padding: 14px 40px;
+            background: var(--gradient-primary);
+            color: var(--white);
             border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-family: 'Pretendard', sans-serif;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
             cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
         }
 
         /* Scroll Animation */
         .fade-in {
             opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
         }
 
         .fade-in.visible {
             opacity: 1;
             transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .navbar {
+                padding: 15px 30px;
+            }
+
+            .hero {
+                padding: 120px 30px 80px;
+            }
+
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 60px;
+                text-align: center;
+            }
+
+            .hero-stats {
+                justify-content: center;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .hero-visual {
+                order: -1;
+            }
+
+            .section {
+                padding: 80px 30px;
+            }
+
+            .values-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .problem-list {
+                grid-template-columns: 1fr;
+            }
+
+            .solution-content {
+                grid-template-columns: 1fr;
+            }
+
+            .camera-wrapper {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero-stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .floating-card {
+                display: none;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+
+            .footer-text {
+                text-align: center;
+            }
         }
     </style>
 </head>
@@ -826,30 +1463,97 @@
         <div class="status-value" id="fixedStatusValue">정상</div>
     </div>
 
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <a href="#" class="logo">Pouch<span>Well</span></a>
+        <ul class="nav-links">
+            <li><a href="#values">가치</a></li>
+            <li><a href="#solution">솔루션</a></li>
+            <li><a href="#neck-check">자세 체크</a></li>
+            <li><a href="#signup">사전접수</a></li>
+        </ul>
+        <a href="#signup" class="nav-cta">사전접수 신청</a>
+    </nav>
+
     <!-- Hero Section -->
     <section class="hero">
-        <span class="hero-badge">사전접수 진행중</span>
-        <h1>파우치웰</h1>
-        <p class="tagline english">"가벼운 선택, 깊은 가치"</p>
-
-        <div class="weight-highlight">
-            <span class="weight-number english">250</span>
-            <span class="weight-unit">g<span>초경량 친환경 웰니스</span></span>
+        <div class="hero-content">
+            <div class="hero-text">
+                <span class="hero-badge">사전접수 진행중</span>
+                <h1>
+                    가벼운 선택,<br>
+                    <span class="highlight">깊은 가치</span>
+                </h1>
+                <p class="hero-description">
+                    경추 건강, 지구 건강, 경제적 건강.<br>
+                    세 가지 가치를 하나의 선택으로 실현하는<br>
+                    친환경 2-in-1 노트북 스탠드 파우치
+                </p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">250<span>g</span></div>
+                        <div class="stat-label">초경량 설계</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">2in1</div>
+                        <div class="stat-label">통합 솔루션</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">100<span>%</span></div>
+                        <div class="stat-label">친환경 소재</div>
+                    </div>
+                </div>
+                <div class="hero-buttons">
+                    <a href="#signup" class="btn-primary">
+                        사전접수 신청하기
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                    <a href="#neck-check" class="btn-secondary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <polygon points="10 8 16 12 10 16 10 8"/>
+                        </svg>
+                        자세 체크하기
+                    </a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-image-wrapper">
+                    <div class="hero-image-card">
+                        <div class="product-preview">
+                            <div class="product-preview-icon">💼</div>
+                            <h3 class="english">PouchWell</h3>
+                            <p>파우치 + 스탠드 통합 솔루션</p>
+                        </div>
+                    </div>
+                    <div class="floating-card card-1">
+                        <div class="floating-card-icon">🌱</div>
+                        <div class="floating-card-text">
+                            Eco-Friendly
+                            <span>친환경 소재</span>
+                        </div>
+                    </div>
+                    <div class="floating-card card-2">
+                        <div class="floating-card-icon">🎯</div>
+                        <div class="floating-card-text">
+                            Ergonomic
+                            <span>인체공학 설계</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <p class="hero-description">
-            경추 건강, 지구 건강, 경제적 건강.<br>
-            세 가지 가치를 하나의 선택으로 실현하는<br>
-            친환경 2-in-1 노트북 스탠드 파우치
-        </p>
     </section>
 
     <!-- Values Section -->
-    <section class="values fade-in">
+    <section class="section values fade-in" id="values">
         <div class="container">
-            <div class="section-title">
-                <h2>삼중 가치의 조화</h2>
-                <p>개인의 웰빙, 환경적 책임, 경제적 합리성을 하나로</p>
+            <div class="section-header">
+                <span class="section-tag">OUR VALUES</span>
+                <h2 class="section-title">삼중 가치의 조화</h2>
+                <p class="section-subtitle">개인의 웰빙, 환경적 책임, 경제적 합리성을 하나로</p>
             </div>
 
             <div class="values-grid">
@@ -860,7 +1564,7 @@
                 </div>
                 <div class="value-card">
                     <div class="value-icon">🌍</div>
-                    <h3>Environmental Stewardship</h3>
+                    <h3>Environmental Care</h3>
                     <p>재생 가능한 친환경 소재를 사용하여 지구에 대한 책임을 실천합니다. 당신의 선택이 환경을 보호합니다.</p>
                 </div>
                 <div class="value-card">
@@ -873,39 +1577,53 @@
     </section>
 
     <!-- Problem Section -->
-    <section class="problem fade-in">
+    <section class="section problem fade-in">
         <div class="container">
-            <div class="section-title">
-                <h2>우리가 해결하는 문제</h2>
-                <p>더 이상 타협하지 마세요</p>
+            <div class="section-header">
+                <span class="section-tag">THE PROBLEM</span>
+                <h2 class="section-title">우리가 해결하는 문제</h2>
+                <p class="section-subtitle">더 이상 타협하지 마세요</p>
             </div>
 
             <div class="problem-list">
                 <div class="problem-item">
-                    <span class="problem-x">✕</span>
-                    <p><strong>무겁고 불편한 노트북 스탠드</strong> — 휴대가 어려워 결국 사용하지 않게 되는 건강 솔루션</p>
+                    <div class="problem-icon">⚖️</div>
+                    <div class="problem-text">
+                        <h4>무겁고 불편한 노트북 스탠드</h4>
+                        <p>휴대가 어려워 결국 사용하지 않게 되는 건강 솔루션</p>
+                    </div>
                 </div>
                 <div class="problem-item">
-                    <span class="problem-x">✕</span>
-                    <p><strong>플라스틱 기반의 저렴한 파우치</strong> — 환경에 대한 죄책감을 안고 사용하는 일상용품</p>
+                    <div class="problem-icon">🏭</div>
+                    <div class="problem-text">
+                        <h4>플라스틱 기반의 저렴한 파우치</h4>
+                        <p>환경에 대한 죄책감을 안고 사용하는 일상용품</p>
+                    </div>
                 </div>
                 <div class="problem-item">
-                    <span class="problem-x">✕</span>
-                    <p><strong>고가의 친환경 제품</strong> — 가치는 인정하지만 접근하기 어려운 가격 장벽</p>
+                    <div class="problem-icon">💰</div>
+                    <div class="problem-text">
+                        <h4>고가의 친환경 제품</h4>
+                        <p>가치는 인정하지만 접근하기 어려운 가격 장벽</p>
+                    </div>
                 </div>
                 <div class="problem-item">
-                    <span class="problem-x">✕</span>
-                    <p><strong>증가하는 20대 경추 질환</strong> — 하루 4시간 이상 노트북 사용, 방치되는 목 건강</p>
+                    <div class="problem-icon">📱</div>
+                    <div class="problem-text">
+                        <h4>증가하는 20대 경추 질환</h4>
+                        <p>하루 4시간 이상 노트북 사용, 방치되는 목 건강</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Solution Section -->
-    <section class="solution fade-in">
+    <section class="section solution fade-in" id="solution">
         <div class="container">
             <div class="solution-content">
                 <div class="solution-text">
+                    <span class="section-tag">THE SOLUTION</span>
                     <h3>파우치웰의 해답</h3>
                     <p>
                         친환경 소재로 정교하게 설계된 250g 초경량 2-in-1 솔루션.
@@ -923,34 +1641,55 @@
                 </div>
 
                 <div class="solution-visual">
-                    <p class="product-placeholder">
-                        "타협 없는 완성도"<br><br>
-                        경량화 · 친환경성 · 기능성<br>
-                        모두를 만족하는 통합 솔루션
-                    </p>
+                    <div class="product-image">💼</div>
+                    <h4 class="english">"타협 없는 완성도"</h4>
+                    <p>경량화 · 친환경성 · 기능성<br>모두를 만족하는 통합 솔루션</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Neck Check Section -->
-    <section class="neck-check fade-in" id="neck-check">
-        <div class="neck-check-container">
-            <div class="section-title">
-                <h2>실시간 목 자세 체크</h2>
-                <p>카메라로 현재 목 상태를 확인하고 거북목을 예방하세요</p>
+    <section class="section neck-check fade-in" id="neck-check">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">POSTURE CHECK</span>
+                <h2 class="section-title">실시간 목 자세 체크</h2>
+                <p class="section-subtitle">카메라로 현재 목 상태를 확인하고 거북목을 예방하세요</p>
             </div>
 
             <div class="camera-wrapper">
-                <div class="camera-box" id="cameraBox">
-                    <div class="camera-placeholder" id="cameraPlaceholder">
-                        <div class="camera-placeholder-icon">📷</div>
-                        <h4>카메라를 시작해주세요</h4>
-                        <p>웹캠을 통해 실시간으로<br>목 자세를 분석합니다</p>
-                        <button class="start-camera-btn" id="startCameraBtn">카메라 시작하기</button>
+                <div>
+                    <div class="camera-box" id="cameraBox">
+                        <div class="camera-placeholder" id="cameraPlaceholder">
+                            <div class="camera-placeholder-icon">📷</div>
+                            <h4>카메라를 시작해주세요</h4>
+                            <p>웹캠을 통해 실시간으로 목 자세를 분석합니다</p>
+                            <button class="start-camera-btn" id="startCameraBtn">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polygon points="5 3 19 12 5 21 5 3"/>
+                                </svg>
+                                카메라 시작하기
+                            </button>
+                        </div>
+                        <video id="webcam" autoplay playsinline style="display:none;"></video>
+                        <canvas id="poseCanvas" style="display:none;"></canvas>
                     </div>
-                    <video id="webcam" autoplay playsinline style="display:none;"></video>
-                    <canvas id="poseCanvas" style="display:none;"></canvas>
+                    <div class="camera-controls" id="cameraControls" style="display:none;">
+                        <button class="pip-btn" id="pipBtn">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="3" width="20" height="14" rx="2"/>
+                                <rect x="12" y="10" width="8" height="6" rx="1"/>
+                            </svg>
+                            미니 창으로 보기
+                        </button>
+                        <button class="stop-btn" id="stopCameraBtn">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="6" y="6" width="12" height="12"/>
+                            </svg>
+                            카메라 종료
+                        </button>
+                    </div>
                 </div>
 
                 <div class="status-panel">
@@ -976,7 +1715,7 @@
                     </div>
 
                     <div class="tips-card">
-                        <h4>올바른 자세 팁</h4>
+                        <h4>올바른 자세 TIP</h4>
                         <ul>
                             <li>모니터 상단을 눈높이에 맞추거나 15° 아래로</li>
                             <li>턱-목 각도 105°~120° 유지하기</li>
@@ -987,59 +1726,67 @@
                     </div>
                 </div>
             </div>
-
-            <div class="camera-controls" id="cameraControls" style="display:none;">
-                <button class="stop-btn" id="stopCameraBtn">카메라 종료</button>
-            </div>
         </div>
     </section>
 
     <!-- CTA Section -->
-    <section class="cta fade-in" id="signup">
-        <h2>사전접수 신청하기</h2>
-        <p class="subtitle english">Be the First to Experience</p>
-        <p>
-            파우치웰의 첫 번째 고객이 되어주세요.<br>
-            사전접수 고객에게는 특별한 혜택을 드립니다.
-        </p>
+    <section class="section cta fade-in" id="signup">
+        <div class="container cta-content">
+            <span class="section-tag">PRE-ORDER</span>
+            <h2>사전접수 신청하기</h2>
+            <p class="subtitle english">Be the First to Experience</p>
+            <p>
+                파우치웰의 첫 번째 고객이 되어주세요.<br>
+                사전접수 고객에게는 특별한 혜택을 드립니다.
+            </p>
 
-        <span class="benefit-badge">사전접수 특별 할인 + 무료배송</span>
+            <span class="benefit-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+                사전접수 특별 할인 + 무료배송
+            </span>
 
-        <form class="signup-form" id="preorderForm">
-            <div class="form-group">
-                <label for="name">이름</label>
-                <input type="text" id="name" name="name" placeholder="홍길동" required>
-            </div>
+            <form class="signup-form" id="preorderForm">
+                <div class="form-group">
+                    <label for="name">이름</label>
+                    <input type="text" id="name" name="name" placeholder="홍길동" required>
+                </div>
 
-            <div class="form-group">
-                <label for="email">이메일</label>
-                <input type="email" id="email" name="email" placeholder="example@email.com" required>
-            </div>
+                <div class="form-group">
+                    <label for="email">이메일</label>
+                    <input type="email" id="email" name="email" placeholder="example@email.com" required>
+                </div>
 
-            <div class="form-group">
-                <label for="phone">연락처</label>
-                <input type="tel" id="phone" name="phone" placeholder="010-1234-5678" required>
-            </div>
+                <div class="form-group">
+                    <label for="phone">연락처</label>
+                    <input type="tel" id="phone" name="phone" placeholder="010-1234-5678" required>
+                </div>
 
-            <div class="checkbox-group">
-                <input type="checkbox" id="privacy" required>
-                <label for="privacy">
-                    <a href="#" onclick="alert('개인정보 처리방침 내용이 표시됩니다.')">개인정보 처리방침</a>에 동의하며,
-                    파우치웰의 런칭 소식 및 프로모션 정보 수신에 동의합니다.
-                </label>
-            </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="privacy" required>
+                    <label for="privacy">
+                        <a href="#" onclick="alert('개인정보 처리방침 내용이 표시됩니다.')">개인정보 처리방침</a>에 동의하며,
+                        파우치웰의 런칭 소식 및 프로모션 정보 수신에 동의합니다.
+                    </label>
+                </div>
 
-            <button type="submit" class="submit-btn">사전접수 신청하기</button>
+                <button type="submit" class="submit-btn">사전접수 신청하기</button>
 
-            <p class="form-note">* 사전접수는 구매 의무가 없으며, 언제든 취소 가능합니다.</p>
-        </form>
+                <p class="form-note">* 사전접수는 구매 의무가 없으며, 언제든 취소 가능합니다.</p>
+            </form>
+        </div>
     </section>
 
     <!-- Footer -->
     <footer>
-        <p class="logo english">Pouch Well</p>
-        <p>파우치웰 | 가벼운 선택, 깊은 가치</p>
-        <p>© 2024 PouchWell. All rights reserved.</p>
+        <div class="footer-content">
+            <div class="footer-logo">Pouch<span>Well</span></div>
+            <div class="footer-text">
+                <p>파우치웰 | 가벼운 선택, 깊은 가치</p>
+                <p>© 2024 PouchWell. All rights reserved.</p>
+            </div>
+        </div>
     </footer>
 
     <!-- Success Modal -->
@@ -1056,6 +1803,16 @@
     </div>
 
     <script>
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
         // Scroll Animation
         const fadeElements = document.querySelectorAll('.fade-in');
 
@@ -1073,7 +1830,6 @@
         document.getElementById('preorderForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
-            // 여기에 실제 폼 제출 로직 추가 (예: Google Sheets, 서버 API 등)
             const formData = {
                 name: document.getElementById('name').value,
                 email: document.getElementById('email').value,
@@ -1082,10 +1838,7 @@
 
             console.log('사전접수 데이터:', formData);
 
-            // 성공 모달 표시
             document.getElementById('successModal').classList.add('active');
-
-            // 폼 초기화
             this.reset();
         });
 
@@ -1094,7 +1847,6 @@
             document.getElementById('successModal').classList.remove('active');
         }
 
-        // Close modal on overlay click
         document.getElementById('successModal').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeModal();
@@ -1110,6 +1862,7 @@
         const canvasCtx = canvasElement.getContext('2d');
         const startCameraBtn = document.getElementById('startCameraBtn');
         const stopCameraBtn = document.getElementById('stopCameraBtn');
+        const pipBtn = document.getElementById('pipBtn');
         const cameraPlaceholder = document.getElementById('cameraPlaceholder');
         const cameraControls = document.getElementById('cameraControls');
         const statusIndicator = document.getElementById('statusIndicator');
@@ -1123,8 +1876,11 @@
         let camera = null;
         let pose = null;
         let isRunning = false;
+        let pipWindow = null;
+        let pipCanvas = null;
+        let pipCtx = null;
+        let pipStatusBox = null;
 
-        // 고정 팝업 업데이트 함수
         function updateFixedPopup(status) {
             if (!isRunning) {
                 fixedStatusPopup.classList.remove('active', 'good', 'bad');
@@ -1143,7 +1899,6 @@
             }
         }
 
-        // 상태 업데이트 함수
         function updateStatus(status, angle) {
             statusIndicator.className = 'status-indicator';
 
@@ -1178,68 +1933,53 @@
             } else {
                 angleValue.textContent = '--°';
             }
+
+            updatePipCanvas(status);
         }
 
-        // 목 각도 계산 함수 (어깨-귀 라인 각도)
-        // 정면에서 봤을 때 귀가 어깨선보다 얼마나 앞으로 나왔는지 측정
-        // 거북목 자가진단: 귀가 어깨선보다 5cm 이상 앞으로 나오면 거북목 의심
-        // 고개를 45° 숙이면 목에 약 24kg의 부담이 가해짐
         function calculateNeckAngle(landmarks) {
-            // MediaPipe Pose 랜드마크 인덱스
-            // 11: 왼쪽 어깨, 12: 오른쪽 어깨
-            // 7: 왼쪽 귀, 8: 오른쪽 귀
-
             const leftShoulder = landmarks[11];
             const rightShoulder = landmarks[12];
             const leftEar = landmarks[7];
             const rightEar = landmarks[8];
 
-            // 어깨 중심점
             const shoulderCenter = {
                 x: (leftShoulder.x + rightShoulder.x) / 2,
                 y: (leftShoulder.y + rightShoulder.y) / 2
             };
 
-            // 귀 중심점
             const earCenter = {
                 x: (leftEar.x + rightEar.x) / 2,
                 y: (leftEar.y + rightEar.y) / 2
             };
 
-            // 수직선 기준 머리 전방 기울기 각도 계산
-            // 귀가 어깨보다 앞으로 나올수록 각도가 커짐
             const deltaX = earCenter.x - shoulderCenter.x;
-            const deltaY = shoulderCenter.y - earCenter.y; // y는 위로 갈수록 작아짐
+            const deltaY = shoulderCenter.y - earCenter.y;
 
-            // 각도 계산 (라디안 -> 도)
             const angleRad = Math.atan2(deltaX, deltaY);
             const angleDeg = Math.abs(angleRad * (180 / Math.PI));
 
             return angleDeg;
         }
 
-        // 자세 분석 결과 처리
         function onResults(results) {
             if (!isRunning) return;
 
             canvasCtx.save();
             canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
 
-            // 비디오 프레임 그리기
             canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
 
             if (results.poseLandmarks) {
-                // 포즈 랜드마크 그리기 (상체만)
                 const upperBodyConnections = [
-                    [11, 12], // 어깨
-                    [11, 13], [13, 15], // 왼팔
-                    [12, 14], [14, 16], // 오른팔
-                    [11, 23], [12, 24], // 몸통
-                    [0, 7], [0, 8], // 얼굴-귀
+                    [11, 12],
+                    [11, 13], [13, 15],
+                    [12, 14], [14, 16],
+                    [11, 23], [12, 24],
+                    [0, 7], [0, 8],
                 ];
 
-                // 연결선 그리기
-                canvasCtx.strokeStyle = 'rgba(95, 113, 97, 0.7)';
+                canvasCtx.strokeStyle = 'rgba(0, 102, 255, 0.7)';
                 canvasCtx.lineWidth = 3;
 
                 upperBodyConnections.forEach(([start, end]) => {
@@ -1254,8 +1994,7 @@
                     }
                 });
 
-                // 주요 포인트 그리기
-                const keyPoints = [0, 7, 8, 11, 12]; // 코, 귀, 어깨
+                const keyPoints = [0, 7, 8, 11, 12];
                 keyPoints.forEach(index => {
                     const point = results.poseLandmarks[index];
                     if (point) {
@@ -1265,7 +2004,7 @@
                             point.y * canvasElement.height,
                             6, 0, 2 * Math.PI
                         );
-                        canvasCtx.fillStyle = '#5F7161';
+                        canvasCtx.fillStyle = '#0066FF';
                         canvasCtx.fill();
                         canvasCtx.strokeStyle = 'white';
                         canvasCtx.lineWidth = 2;
@@ -1273,11 +2012,6 @@
                     }
                 });
 
-                // 목 각도 계산 및 상태 업데이트
-                // 판단 기준:
-                // - 0~10°: 좋은 자세 (귀가 어깨선 위에 있음)
-                // - 10~25°: 주의 필요 (약간 전방으로 기울어짐)
-                // - 25° 이상: 거북목 (45°에서 24kg 부담 기준, 25°부터 경고)
                 const neckAngle = calculateNeckAngle(results.poseLandmarks);
 
                 let status;
@@ -1295,14 +2029,12 @@
 
                 updateStatus(status, neckAngle);
 
-                // 화면에 각도 및 상태 표시
-                canvasCtx.font = 'bold 18px Pretendard';
-                canvasCtx.fillStyle = status === 'good' ? '#4CAF50' : status === 'warning' ? '#FF9800' : '#F44336';
+                canvasCtx.font = 'bold 18px "Noto Sans KR"';
+                canvasCtx.fillStyle = status === 'good' ? '#10B981' : status === 'warning' ? '#F59E0B' : '#EF4444';
                 canvasCtx.fillText(`전방 기울기: ${Math.round(neckAngle)}° (${statusText})`, 15, 30);
 
             } else {
-                // 포즈를 감지하지 못한 경우
-                canvasCtx.font = '16px Pretendard';
+                canvasCtx.font = '16px "Noto Sans KR"';
                 canvasCtx.fillStyle = 'white';
                 canvasCtx.fillText('얼굴과 어깨가 보이도록 위치해주세요', 15, 30);
             }
@@ -1310,13 +2042,17 @@
             canvasCtx.restore();
         }
 
-        // 카메라 시작
         async function startCamera() {
             startCameraBtn.disabled = true;
-            startCameraBtn.textContent = '로딩 중...';
+            startCameraBtn.innerHTML = `
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spin">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 6v6l4 2"/>
+                </svg>
+                로딩 중...
+            `;
 
             try {
-                // MediaPipe Pose 초기화
                 pose = new Pose({
                     locateFile: (file) => {
                         return `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`;
@@ -1334,7 +2070,6 @@
 
                 pose.onResults(onResults);
 
-                // 카메라 스트림 가져오기
                 const stream = await navigator.mediaDevices.getUserMedia({
                     video: { width: 640, height: 480, facingMode: 'user' }
                 });
@@ -1342,29 +2077,30 @@
                 videoElement.srcObject = stream;
                 await videoElement.play();
 
-                // 캔버스 크기 설정
                 canvasElement.width = videoElement.videoWidth;
                 canvasElement.height = videoElement.videoHeight;
 
-                // UI 업데이트
                 cameraPlaceholder.style.display = 'none';
                 videoElement.style.display = 'block';
                 canvasElement.style.display = 'block';
                 cameraControls.style.display = 'flex';
                 isRunning = true;
 
-                // 프레임 처리 시작
                 processFrame();
 
             } catch (error) {
                 console.error('카메라 시작 오류:', error);
                 alert('카메라를 시작할 수 없습니다. 카메라 권한을 확인해주세요.');
                 startCameraBtn.disabled = false;
-                startCameraBtn.textContent = '카메라 시작하기';
+                startCameraBtn.innerHTML = `
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="5 3 19 12 5 21 5 3"/>
+                    </svg>
+                    카메라 시작하기
+                `;
             }
         }
 
-        // 프레임 처리
         async function processFrame() {
             if (!isRunning) return;
 
@@ -1372,34 +2108,248 @@
             requestAnimationFrame(processFrame);
         }
 
-        // 카메라 종료
         function stopCamera() {
             isRunning = false;
+
+            if (pipWindow && !pipWindow.closed) {
+                pipWindow.close();
+            }
+            pipWindow = null;
 
             if (videoElement.srcObject) {
                 videoElement.srcObject.getTracks().forEach(track => track.stop());
                 videoElement.srcObject = null;
             }
 
-            // UI 초기화
             cameraPlaceholder.style.display = 'flex';
             videoElement.style.display = 'none';
             canvasElement.style.display = 'none';
             cameraControls.style.display = 'none';
             startCameraBtn.disabled = false;
-            startCameraBtn.textContent = '카메라 시작하기';
+            startCameraBtn.innerHTML = `
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="5 3 19 12 5 21 5 3"/>
+                </svg>
+                카메라 시작하기
+            `;
 
             updateStatus('inactive', null);
-
-            // 캔버스 초기화
             canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
         }
 
-        // 이벤트 리스너 등록
+        async function openPipWindow() {
+            if (!('documentPictureInPicture' in window)) {
+                openFallbackPopup();
+                return;
+            }
+
+            try {
+                pipWindow = await documentPictureInPicture.requestWindow({
+                    width: 320,
+                    height: 300
+                });
+
+                const style = pipWindow.document.createElement('style');
+                style.textContent = `
+                    * { margin: 0; padding: 0; box-sizing: border-box; }
+                    body {
+                        font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-serif;
+                        background: #0A1628;
+                        display: flex;
+                        flex-direction: column;
+                        height: 100vh;
+                        overflow: hidden;
+                    }
+                    .pip-container {
+                        flex: 1;
+                        display: flex;
+                        flex-direction: column;
+                    }
+                    .pip-video-container {
+                        flex: 1;
+                        position: relative;
+                        background: #000;
+                    }
+                    canvas {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                    }
+                    .pip-status {
+                        padding: 14px 15px;
+                        text-align: center;
+                        font-weight: 700;
+                        font-size: 15px;
+                        color: white;
+                        transition: background 0.3s;
+                    }
+                    .pip-status.good { background: linear-gradient(135deg, #10B981 0%, #34D399 100%); }
+                    .pip-status.bad { background: linear-gradient(135deg, #EF4444 0%, #F87171 100%); }
+                    .pip-status.waiting { background: #475569; }
+                `;
+                pipWindow.document.head.appendChild(style);
+
+                const container = pipWindow.document.createElement('div');
+                container.className = 'pip-container';
+                container.innerHTML = `
+                    <div class="pip-video-container">
+                        <canvas id="pipCanvas"></canvas>
+                    </div>
+                    <div class="pip-status waiting" id="pipStatus">분석 중...</div>
+                `;
+                pipWindow.document.body.appendChild(container);
+
+                pipCanvas = pipWindow.document.getElementById('pipCanvas');
+                pipCtx = pipCanvas.getContext('2d');
+                pipCanvas.width = canvasElement.width;
+                pipCanvas.height = canvasElement.height;
+                pipStatusBox = pipWindow.document.getElementById('pipStatus');
+
+                pipWindow.addEventListener('pagehide', () => {
+                    pipWindow = null;
+                    pipCanvas = null;
+                    pipCtx = null;
+                    pipStatusBox = null;
+                    pipBtn.innerHTML = `
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2"/>
+                            <rect x="12" y="10" width="8" height="6" rx="1"/>
+                        </svg>
+                        미니 창으로 보기
+                    `;
+                    pipBtn.disabled = false;
+                });
+
+                pipBtn.textContent = '미니 창 열림';
+                pipBtn.disabled = true;
+
+            } catch (error) {
+                console.error('PIP 창 열기 실패:', error);
+                openFallbackPopup();
+            }
+        }
+
+        function openFallbackPopup() {
+            pipWindow = window.open('', 'PouchWell 목 자세 체크', 'width=350,height=320,top=100,left=100');
+
+            if (!pipWindow) {
+                alert('팝업이 차단되었습니다. 팝업을 허용해주세요.');
+                return;
+            }
+
+            pipWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>목 자세 체크</title>
+                    <style>
+                        * { margin: 0; padding: 0; box-sizing: border-box; }
+                        body {
+                            font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-serif;
+                            background: #0A1628;
+                            display: flex;
+                            flex-direction: column;
+                            height: 100vh;
+                            overflow: hidden;
+                        }
+                        .pip-container {
+                            flex: 1;
+                            display: flex;
+                            flex-direction: column;
+                        }
+                        .pip-video-container {
+                            flex: 1;
+                            position: relative;
+                            background: #000;
+                        }
+                        canvas {
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover;
+                        }
+                        .pip-status {
+                            padding: 14px 15px;
+                            text-align: center;
+                            font-weight: 700;
+                            font-size: 15px;
+                            color: white;
+                            transition: background 0.3s;
+                        }
+                        .pip-status.good { background: linear-gradient(135deg, #10B981 0%, #34D399 100%); }
+                        .pip-status.bad { background: linear-gradient(135deg, #EF4444 0%, #F87171 100%); }
+                        .pip-status.waiting { background: #475569; }
+                    </style>
+                </head>
+                <body>
+                    <div class="pip-container">
+                        <div class="pip-video-container">
+                            <canvas id="pipCanvas"></canvas>
+                        </div>
+                        <div class="pip-status waiting" id="pipStatus">분석 중...</div>
+                    </div>
+                </body>
+                </html>
+            `);
+            pipWindow.document.close();
+
+            setTimeout(() => {
+                pipCanvas = pipWindow.document.getElementById('pipCanvas');
+                pipCtx = pipCanvas.getContext('2d');
+                pipCanvas.width = canvasElement.width;
+                pipCanvas.height = canvasElement.height;
+                pipStatusBox = pipWindow.document.getElementById('pipStatus');
+            }, 100);
+
+            const checkClosed = setInterval(() => {
+                if (pipWindow.closed) {
+                    clearInterval(checkClosed);
+                    pipWindow = null;
+                    pipCanvas = null;
+                    pipCtx = null;
+                    pipStatusBox = null;
+                    pipBtn.innerHTML = `
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2"/>
+                            <rect x="12" y="10" width="8" height="6" rx="1"/>
+                        </svg>
+                        미니 창으로 보기
+                    `;
+                    pipBtn.disabled = false;
+                }
+            }, 500);
+
+            pipBtn.textContent = '미니 창 열림';
+            pipBtn.disabled = true;
+        }
+
+        function updatePipCanvas(status) {
+            if (pipWindow && pipCtx && pipCanvas) {
+                try {
+                    pipCtx.drawImage(canvasElement, 0, 0, pipCanvas.width, pipCanvas.height);
+
+                    if (pipStatusBox) {
+                        pipStatusBox.className = 'pip-status';
+                        if (status === 'good') {
+                            pipStatusBox.classList.add('good');
+                            pipStatusBox.textContent = '정상';
+                        } else if (status === 'warning' || status === 'bad') {
+                            pipStatusBox.classList.add('bad');
+                            pipStatusBox.textContent = '비정상';
+                        } else {
+                            pipStatusBox.classList.add('waiting');
+                            pipStatusBox.textContent = '분석 중...';
+                        }
+                    }
+                } catch (e) {
+                    // PIP 창이 닫혔을 수 있음
+                }
+            }
+        }
+
         startCameraBtn.addEventListener('click', startCamera);
         stopCameraBtn.addEventListener('click', stopCamera);
+        pipBtn.addEventListener('click', openPipWindow);
 
-        // 페이지 종료 시 카메라 정리
         window.addEventListener('beforeunload', stopCamera);
     </script>
 </body>
