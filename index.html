@@ -701,6 +701,47 @@
             background: #D32F2F;
         }
 
+        /* Fixed Status Popup */
+        .fixed-status-popup {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 15px 25px;
+            border-radius: 12px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            z-index: 9999;
+            display: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .fixed-status-popup.active {
+            display: block;
+        }
+
+        .fixed-status-popup.good {
+            background: #4CAF50;
+        }
+
+        .fixed-status-popup.bad {
+            background: #F44336;
+        }
+
+        .fixed-status-popup .status-label {
+            font-size: 0.8rem;
+            opacity: 0.9;
+            margin-bottom: 3px;
+        }
+
+        .fixed-status-popup .status-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
         /* Success Modal */
         .modal-overlay {
             display: none;
@@ -779,6 +820,12 @@
     </style>
 </head>
 <body>
+    <!-- Fixed Status Popup -->
+    <div class="fixed-status-popup" id="fixedStatusPopup">
+        <div class="status-label">목 자세</div>
+        <div class="status-value" id="fixedStatusValue">정상</div>
+    </div>
+
     <!-- Hero Section -->
     <section class="hero">
         <span class="hero-badge">사전접수 진행중</span>
@@ -924,16 +971,18 @@
                         <h4>목 기울기 각도</h4>
                         <div class="angle-display">
                             <div class="angle-value" id="angleValue">--°</div>
-                            <p class="angle-label">이상적인 각도: 0° ~ 15°</p>
+                            <p class="angle-label">머리 전방 기울기 (0°가 이상적)</p>
                         </div>
                     </div>
 
                     <div class="tips-card">
                         <h4>올바른 자세 팁</h4>
                         <ul>
-                            <li>모니터를 눈높이에 맞추세요</li>
-                            <li>어깨를 펴고 턱을 당기세요</li>
-                            <li>30분마다 스트레칭하세요</li>
+                            <li>모니터 상단을 눈높이에 맞추거나 15° 아래로</li>
+                            <li>턱-목 각도 105°~120° 유지하기</li>
+                            <li>귀가 어깨선보다 5cm 이상 앞으로 나오면 거북목!</li>
+                            <li>고개 45° 숙이면 목에 24kg 부담</li>
+                            <li>목 꺾기 대신 부드럽게 도리도리 운동</li>
                         </ul>
                     </div>
                 </div>
@@ -1068,10 +1117,31 @@
         const statusTitle = document.getElementById('statusTitle');
         const statusMessage = document.getElementById('statusMessage');
         const angleValue = document.getElementById('angleValue');
+        const fixedStatusPopup = document.getElementById('fixedStatusPopup');
+        const fixedStatusValue = document.getElementById('fixedStatusValue');
 
         let camera = null;
         let pose = null;
         let isRunning = false;
+
+        // 고정 팝업 업데이트 함수
+        function updateFixedPopup(status) {
+            if (!isRunning) {
+                fixedStatusPopup.classList.remove('active', 'good', 'bad');
+                return;
+            }
+
+            fixedStatusPopup.classList.add('active');
+            fixedStatusPopup.classList.remove('good', 'bad');
+
+            if (status === 'good') {
+                fixedStatusPopup.classList.add('good');
+                fixedStatusValue.textContent = '정상';
+            } else {
+                fixedStatusPopup.classList.add('bad');
+                fixedStatusValue.textContent = '비정상';
+            }
+        }
 
         // 상태 업데이트 함수
         function updateStatus(status, angle) {
@@ -1081,22 +1151,26 @@
                 statusIndicator.classList.add('good');
                 statusIcon.textContent = '✓';
                 statusTitle.textContent = '좋은 자세';
-                statusMessage.textContent = '현재 목 자세가 올바릅니다';
+                statusMessage.textContent = '턱-목 각도가 적절합니다. 이 자세를 유지하세요!';
+                updateFixedPopup('good');
             } else if (status === 'warning') {
                 statusIndicator.classList.add('warning');
                 statusIcon.textContent = '⚠';
                 statusTitle.textContent = '주의 필요';
-                statusMessage.textContent = '목이 약간 앞으로 나왔습니다';
+                statusMessage.textContent = '머리가 약간 앞으로 나왔습니다. 턱을 당겨주세요.';
+                updateFixedPopup('bad');
             } else if (status === 'bad') {
                 statusIndicator.classList.add('bad');
                 statusIcon.textContent = '✕';
                 statusTitle.textContent = '거북목 자세';
-                statusMessage.textContent = '목을 뒤로 당기고 턱을 당겨주세요';
+                statusMessage.textContent = '목에 약 24kg의 부담! 귀를 어깨선에 맞춰주세요.';
+                updateFixedPopup('bad');
             } else {
                 statusIndicator.classList.add('inactive');
                 statusIcon.textContent = '⏸';
                 statusTitle.textContent = '대기 중';
                 statusMessage.textContent = '카메라를 시작하면 자세 분석이 시작됩니다';
+                updateFixedPopup(null);
             }
 
             if (angle !== null && angle !== undefined) {
@@ -1107,6 +1181,9 @@
         }
 
         // 목 각도 계산 함수 (어깨-귀 라인 각도)
+        // 정면에서 봤을 때 귀가 어깨선보다 얼마나 앞으로 나왔는지 측정
+        // 거북목 자가진단: 귀가 어깨선보다 5cm 이상 앞으로 나오면 거북목 의심
+        // 고개를 45° 숙이면 목에 약 24kg의 부담이 가해짐
         function calculateNeckAngle(landmarks) {
             // MediaPipe Pose 랜드마크 인덱스
             // 11: 왼쪽 어깨, 12: 오른쪽 어깨
@@ -1129,7 +1206,8 @@
                 y: (leftEar.y + rightEar.y) / 2
             };
 
-            // 수직선 기준 목 기울기 각도 계산
+            // 수직선 기준 머리 전방 기울기 각도 계산
+            // 귀가 어깨보다 앞으로 나올수록 각도가 커짐
             const deltaX = earCenter.x - shoulderCenter.x;
             const deltaY = shoulderCenter.y - earCenter.y; // y는 위로 갈수록 작아짐
 
@@ -1196,23 +1274,31 @@
                 });
 
                 // 목 각도 계산 및 상태 업데이트
+                // 판단 기준:
+                // - 0~10°: 좋은 자세 (귀가 어깨선 위에 있음)
+                // - 10~25°: 주의 필요 (약간 전방으로 기울어짐)
+                // - 25° 이상: 거북목 (45°에서 24kg 부담 기준, 25°부터 경고)
                 const neckAngle = calculateNeckAngle(results.poseLandmarks);
 
                 let status;
-                if (neckAngle <= 15) {
+                let statusText;
+                if (neckAngle <= 10) {
                     status = 'good';
+                    statusText = '좋음';
                 } else if (neckAngle <= 25) {
                     status = 'warning';
+                    statusText = '주의';
                 } else {
                     status = 'bad';
+                    statusText = '위험';
                 }
 
                 updateStatus(status, neckAngle);
 
-                // 화면에 각도 표시
+                // 화면에 각도 및 상태 표시
                 canvasCtx.font = 'bold 18px Pretendard';
                 canvasCtx.fillStyle = status === 'good' ? '#4CAF50' : status === 'warning' ? '#FF9800' : '#F44336';
-                canvasCtx.fillText(`목 기울기: ${Math.round(neckAngle)}°`, 15, 30);
+                canvasCtx.fillText(`전방 기울기: ${Math.round(neckAngle)}° (${statusText})`, 15, 30);
 
             } else {
                 // 포즈를 감지하지 못한 경우
